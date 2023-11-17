@@ -16,6 +16,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    buildFeatures {
+        viewBinding = true
+        compose = true
+    }
 
     buildTypes {
         release {
@@ -30,6 +34,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -37,11 +44,37 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    implementation(libs.androidx.appcompat)
+
+    implementation(libs.material)
+
+    implementation(libs.constraintlayout)
+    implementation(libs.constraintlayout.compose)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.graphics)
+    implementation(libs.tooling)
+    implementation(libs.tooling.preview)
+    implementation(libs.test.junit4)
+    implementation(libs.test.manifest)
+    implementation(libs.viewbinding)
+
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material)
+
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.foundation.layout)
+
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.runtime.livedata)
 }
