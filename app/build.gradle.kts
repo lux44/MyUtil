@@ -1,6 +1,13 @@
-plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+ plugins {
+    //id("com.android.application")
+    //id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kapt)
+
+
+    alias(libs.plugins.androidx.navigation.safeargs)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -77,4 +84,49 @@ dependencies {
 
     implementation(libs.androidx.compose.runtime)
     implementation(libs.runtime.livedata)
+
+    implementation(libs.navigation.compose)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui)
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.gif)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android.gradle.plugin)
+    implementation(libs.hilt.navigation.compose)
+
+    kapt(libs.room.compiler)
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+
+    implementation(libs.datastore.preferences)
+    implementation(libs.datastore.core)
+
+    implementation(libs.work.testing)
+    implementation(libs.work.runtime.ktx)
+
+    implementation(libs.paging.compose)
+    implementation(libs.paging.runtime.ktx)
+    implementation(libs.tracing.ktx)
+
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.viewmodel.ktx)
+
+    implementation(libs.glide)
+
+    implementation(libs.gson)
+    implementation(libs.logging.interceptor)
+    implementation(libs.retrofit2)
+    implementation(libs.converter.gson)
+
+    implementation(libs.profileinstaller)
+
+    implementation(libs.accompanist.themeadapter.material)
+
+    implementation(libs.timber)
+
+    //implementation(libs.org.jetbrains.kotlin.gradle.plugin)
+
 }
