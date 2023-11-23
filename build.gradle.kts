@@ -6,7 +6,9 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android) apply false
     alias(libs.plugins.kapt) apply false
     alias(libs.plugins.hilt) apply false
-
+    kotlin("jvm") version "1.9.0"
+    //kotlin("plugin.serialization") version "1.9.0"
+    alias(libs.plugins.serialization) apply false
 
     alias(libs.plugins.androidx.navigation.safeargs) apply false
 }

@@ -5,7 +5,6 @@
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kapt)
 
-
     alias(libs.plugins.androidx.navigation.safeargs)
     alias(libs.plugins.hilt)
 }
@@ -113,6 +112,8 @@ dependencies {
 
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.livedata)
+    implementation(libs.lifecycle.safestate)
 
     implementation(libs.glide)
 
@@ -126,6 +127,18 @@ dependencies {
     implementation(libs.accompanist.themeadapter.material)
 
     implementation(libs.timber)
+
+    implementation(libs.serialization)
+    //implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0-Beta1")
+
+    implementation(libs.lottie)
+    implementation(libs.lottie.compose)
+
+    implementation(libs.photoView)
+
+    implementation(libs.dotsIndicator)
+
+    //implementation ("com.github.CanHub:Android-Image-Cropper:4.0.0")
 
     //implementation(libs.org.jetbrains.kotlin.gradle.plugin)
 

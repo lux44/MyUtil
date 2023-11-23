@@ -75,6 +75,15 @@ timber = "5.0.1"
 kotlinX = "1.9.0"
 kotlinX-json = "1.6.0"
 
+## Lottie
+lottie = "4.2.0"
+
+## PhotoView
+photoView = "2.0.0"
+
+## DotIndicator
+dots = "4.3"
+
 
 [libraries]
 
@@ -164,6 +173,8 @@ tracing-ktx = { group = "androidx.tracing", name = "tracing-ktx", version.ref = 
 ## Lifecycle
 lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "viewModelCompose" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+lifecycle-safestate = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "lifecycle" }
 
 ## Glide
 glide = { module = "com.github.bumptech.glide:compose", version.ref = "glide" }
@@ -183,9 +194,21 @@ accompanist-themeadapter-material = { module = "com.google.accompanist:accompani
 ## Timber
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
+## Kotlin-Serialization
+serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinX-json" }
+
 ## Kotlin-Gradle-Plugin
 org-jetbrains-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
+## Lottie
+lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
+
+## PinchZoom-Library
+photoView = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoView" }
+
+## ViewPager - DotsIndicator
+dotsIndicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dots" }
 
 
 [plugins]
@@ -194,7 +217,7 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 ## Jetbrains
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 
 ## Hilt
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
