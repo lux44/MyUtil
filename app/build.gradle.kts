@@ -21,10 +21,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
     buildFeatures {
         viewBinding = true
         compose = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -34,9 +36,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("boolean", "RELEASE", "1")
         }
         debug {
             versionNameSuffix = "_001"
+            isMinifyEnabled = true
+            buildConfigField("boolean", "DEBUG", "0")
         }
     }
     compileOptions {

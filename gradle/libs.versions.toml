@@ -15,7 +15,7 @@ junit = "4.13.2"
 test_junit = "1.1.5"
 
 ## core
-core = "3.5.1"
+core = "3.5.0"
 
 ## Lifecycle
 lifecycle = "2.6.1"
@@ -33,7 +33,7 @@ navigation = "2.5.3"
 coil = "2.2.2"
 
 ## Hilt
-hilt = "2.44"
+hilt = "2.48.1"
 hiltNavigationCompose = "1.0.0"
 
 ## Room
