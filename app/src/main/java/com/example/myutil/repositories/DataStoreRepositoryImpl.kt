@@ -118,3 +118,47 @@ class DataStoreRepositoryImpl @Inject constructor(private val context: Context):
         return resultArray
     }
 }
+
+class DataStoreKey {
+    companion object {
+        const val PREF_KEY_LANGUAGE_CODE = "language_code"
+        const val PREF_KEY_TRANSLATE_LANGUAGE_CODE = "translate_language_code"
+        const val PREF_KEY_ACCESS_TOKEN = "access_token"
+        const val PREF_KEY_REFRESH_ACCESS_TOKEN = "refresh_access_token"
+        const val PREF_KEY_REFRESH_TOKEN_PUBLISH_TIME = "refresh_token_publish_date"
+        const val PREF_KEY_CONFIG_APP_VERSION = "current_version"
+        const val PREF_KEY_UID = "uid"
+        const val PREF_KEY_IS_LOGINED = "logined"
+        const val PREF_KEY_LAST_LOGIN_TYPE = "last_login_type"
+        const val PREF_KEY_IS_PERMISSION_CHECKED = "permission_checked"
+        const val PREF_KEY_CLUBSEARCHWORDLIST = "club_search_word_list_key"
+        const val PREF_KEY_CLUBDETAILSEARCHWORDLIST = "club_detail_search_word_list_key"
+        const val PREF_KEY_COMMUNITYSEARCHWORDLIST = "community_search_word_list_key"
+        const val PREF_KEY_COMMUNITY_FAVORITE_SORT_TYPE = "community_favorite_sort_type_key"
+        const val PREF_KEY_RECENT_NEWS_SEARCH = "recent_news_search"
+        const val PREF_KEY_FCM_TOKEN = "fcm_token"
+        const val PREF_KEY_IS_FIRST_PROFILE_COMPLETE = "first_profile_complete"
+        const val PREF_KEY_IS_FIRST_SELECT_INTEREST = "first_select_interest"
+        const val PREF_KEY_BOARD_LIST_FAVORITE_STATE = "board_list_favorite_state"
+        const val PREF_KEY_MY_CLUBS_IS_FAVORITE = "my_clubs_favorite"
+        const val PREF_KEY_API_URL = "api_url"
+        const val PREF_KEY_CLOUDFLARE_URL = "cloud_flare_url"
+        const val PREF_KEY_SYSTEM_COUNTRY = "system_country"
+        const val PREFERENCE_KEY_MINUTE_SORTING = "minute_sorting"
+        const val PREFERENCE_KEY_MINUTE_PROFILE_SORTING = "minute_profile_sorting"
+        const val PREF_KEY_NEW_ALIM_MESSAGE = "new_alim_message"
+        const val PREF_KEY_NEW_CHAT_ALIM_MESSAGE = "new_chat_alim_message"
+        const val PREFERENCE_KEY_USER_LOGIN_ID = "user_login_id"
+        const val PREFERENCE_KEY_USER_PROFILE_IMAGE = "user_profile_image"
+        const val PREFERENCE_KEY_USER_NICKNAME = "user_nickname"
+        const val PREFERENCE_KEY_MINUTE_SEARCH_WORD_LIST = "minute_search_word_list"
+        const val PREF_KEY_MAINPOPUP_DONT_SHOW_DAY = "mainpopup_dontshow_day"
+        const val PREF_KEY_MAINPOPUP_SHOWED_TIME = "mainpopup_showed_time"
+        const val PREF_KEY_MAINPOPUP_LAST_INDX = "mainpopup_last_Index"
+        const val PREF_KEY_MARKETING_PUSH_ON = "MARKETING_PUSH_ON"
+        const val PREF_KEY_MAIN_ACTIVITY_BACKGROUND_START_TIME = "main_activity_background_start_time"
+        const val PREF_KEY_AUTO_TRANSLATE = "auto_translate"
+        const val PREF_KEY_IS_FIRST_RUN = "is_first_run"
+        const val PREF_KEY_HOME_SEARCH_TEXT_LIST = "home_search_text_list"
+    }
+}
