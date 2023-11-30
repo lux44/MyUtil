@@ -17,6 +17,8 @@ import android.os.Build
 import com.example.myutil.data.remote.api.AuthService
 import com.example.myutil.utils.ConstVariables.BASE_URL
 import com.example.myutil.utils.ConstVariables.DEV_BASE_URL
+import com.example.myutil.utils.ConstVariables.DEV_MINUTE_API_URL
+import com.example.myutil.utils.ConstVariables.MINUTE_API_URL
 import com.example.myutil.utils.GzipInterceptor
 import com.example.myutil.utils.TokenRefreshInterceptor
 import okhttp3.Protocol
@@ -44,6 +46,10 @@ class NetworkModule {
     @Retention(AnnotationRetention.BINARY)
     annotation class ApiOkHttpClient
 
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class MinuteApiServer
+
 
 
     /**
@@ -65,6 +71,14 @@ class NetworkModule {
         DEV_BASE_URL
     } else {
         BASE_URL
+    }
+
+    @MinuteApiServer
+    @Provides
+    fun provideMinuteApiUrl(dataStoreRepository: DataStoreRepository) = if (ModeChanger.getInstance(dataStoreRepository).getMode() == ModeChanger.MODE_DEBUG && BuildConfig.DEBUG) {
+        DEV_MINUTE_API_URL
+    } else {
+        MINUTE_API_URL
     }
 
 
@@ -130,6 +144,17 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideAuthRetrofit(client: OkHttpClient, @AuthServer baseUrl: String): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @MinuteApiServer
+    @Singleton
+    @Provides
+    fun provideMinuteRetrofit(client: OkHttpClient, @MinuteApiServer baseUrl: String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
