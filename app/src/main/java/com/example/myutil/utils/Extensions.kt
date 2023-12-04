@@ -7,8 +7,13 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.LeadingMarginSpan
 import android.util.Base64
 import android.webkit.WebView
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkRequest
@@ -136,4 +141,48 @@ fun WebView.executeScript(
 
     Timber.d("executeScript: $sb")
     evaluateJavascript(sb.toString(), onResult)
+}
+
+fun TextView.setLeftMarginSpan(leftStandardText: String, fullText: String) {
+    try {
+        val startMargin = this.paint.measureText(leftStandardText).toInt()
+
+        val hasNewLineChar = (fullText.indexOf("\n") != -1)
+        val spannableSb = SpannableStringBuilder()
+        var len: Int
+
+        if (hasNewLineChar) {   // 개행문자가 포함된 경우 leftMargin 적용
+            val splitString = fullText.split("\n")
+            var firstParagraph = 0
+
+            for (k in splitString.indices) {
+                len = spannableSb.length
+                if (k > 0) firstParagraph = startMargin
+
+                spannableSb.apply {
+                    append(splitString[k])
+                    append("\n")
+                    setSpan(
+                        LeadingMarginSpan.Standard(firstParagraph, startMargin),
+                        len,
+                        len + 1,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+            }
+
+            this.text = spannableSb
+        } else {
+            this.text = SpannableString(text).apply {
+                setSpan(
+                    LeadingMarginSpan.Standard(0, startMargin),
+                    0,
+                    length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        }
+    } catch (e: Exception) {
+        Timber.e("${e.printStackTrace()}")
+    }
 }
