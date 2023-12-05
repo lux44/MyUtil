@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MyUtil</string>
+
+    <string name="h_confirm">"확인"</string>
 </resources>
