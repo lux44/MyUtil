@@ -5,20 +5,28 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.TextUtils
+import android.text.style.ForegroundColorSpan
 import android.text.style.LeadingMarginSpan
+import android.text.style.URLSpan
 import android.util.Base64
 import android.webkit.WebView
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.core.text.set
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.myutil.R
+import com.example.myutil.data.local.model.PostContents
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -185,4 +193,32 @@ fun TextView.setLeftMarginSpan(leftStandardText: String, fullText: String) {
     } catch (e: Exception) {
         Timber.e("${e.printStackTrace()}")
     }
+}
+
+fun ViewHolder.setHyperLinkToText(linkSeparateText: List<PostContents>): CharSequence {
+    var text: CharSequence = ""
+
+    linkSeparateText.forEachIndexed { _, postContents ->
+        postContents.text?.let {
+            val spannableString = SpannableString(it)
+            if (postContents.type == ConstVariables.LINK_CONTENTS_TYPE) {
+                spannableString.apply {
+                    setSpan(
+                        URLSpan(postContents.text),
+                        0,
+                        it.length,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                    setSpan(
+                        ForegroundColorSpan(Color.parseColor("#4787E7")),
+                        0,
+                        it.length,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+            }
+            text = TextUtils.concat(text, spannableString)
+        }
+    }
+    return text
 }
