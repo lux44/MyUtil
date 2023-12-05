@@ -222,3 +222,25 @@ fun ViewHolder.setHyperLinkToText(linkSeparateText: List<PostContents>): CharSeq
     }
     return text
 }
+
+fun ViewHolder.convertingTextContainUrl(contents: String?, ogLinkList: List<String>): ArrayList<PostContents>? {
+
+    val linkSeparateText = arrayListOf<PostContents>()
+    var cutContents = contents ?: ""
+
+    ogLinkList.forEachIndexed { index, s ->
+        if (cutContents.indexOf(s) != -1) {
+
+            linkSeparateText.add(PostContents(ConstVariables.TEXT_CONTENTS_TYPE, cutContents.substring(0, cutContents.indexOf(s))))
+            cutContents = cutContents.substring(cutContents.indexOf(s))
+            linkSeparateText.add(PostContents(ConstVariables.LINK_CONTENTS_TYPE, cutContents.substring(0, s.length)))
+            cutContents = cutContents.substring(s.length)
+
+            if (index == ogLinkList.size -1){
+                linkSeparateText.add(PostContents(ConstVariables.TEXT_CONTENTS_TYPE, cutContents))
+            }
+        }
+    }
+
+    return if (linkSeparateText.isNotEmpty()) null else linkSeparateText
+}
