@@ -31,6 +31,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.myutil.R
 import com.example.myutil.data.local.model.PostContents
+import com.example.myutil.ui.common.dialog.CommonDialog
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -92,6 +93,42 @@ fun Fragment.moveToDeepLinkRequest(uri: Uri) {
         Timber.e("${e.printStackTrace()}")
     }
 }
+
+fun Fragment.showLoginPopup() {
+    CommonDialog.Builder().apply {
+        title = getString(R.string.r_need_login)
+        message = getString(R.string.se_r_need_login)
+        positiveButtonString = getString(R.string.h_confirm)
+        negativeButtonString = getString(R.string.c_cancel)
+        positiveButtonClickListener = object : CommonDialog.ClickListener {
+            override fun onClick() {
+                context?.let {
+//                    val intent = Intent(it, LoginMainActivity::class.java)
+//                    intent.putExtra(
+//                        ConstVariables.INTENT.EXTRA_NAV_START_DESTINATION_ID,
+//                        R.id.loginWebViewFragment
+//                    )
+//                    startActivity(intent)
+//                    activity?.finish()
+                }
+            }
+
+        }
+    }.build().show(parentFragmentManager, "loginDialog")
+}
+
+fun Context.getBaseImageKeyValue(uid: String?): Int {
+    val profileDrawbleList = listOf(R.drawable.profile_random_character1, R.drawable.profile_random_character2, R.drawable.profile_random_character3, R.drawable.profile_random_character4, R.drawable.profile_random_character5)
+
+    if (uid.isNullOrEmpty()) return profileDrawbleList[2]
+
+    val lastChar = uid.substring(uid.length -1)
+    val changeInt = lastChar.toIntOrNull()
+
+    return if (changeInt != null) profileDrawbleList[changeInt%5]
+    else profileDrawbleList[lastChar.toCharArray()[0].code%5]
+}
+
 fun Date.age(): Int {
     val calendar = Calendar.getInstance()
     calendar.time = Date(time - Date().time)

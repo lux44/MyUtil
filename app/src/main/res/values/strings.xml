@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">MyUtil</string>
 
+    <string name="c_cancel">"취소"</string>
+
+
     <string name="h_confirm">"확인"</string>
+
+    <string name="r_need_login">"로그인 필요"</string>
+
+    <string name="se_r_need_login">"로그인이 필요합니다.\n로그인 후 더 편리하게 이용하세요!"</string>
 </resources>
