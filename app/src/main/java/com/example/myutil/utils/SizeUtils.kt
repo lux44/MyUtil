@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.util.DisplayMetrics
 import android.util.Size
+import android.util.TypedValue
 import android.view.WindowManager
 
 class SizeUtils {
@@ -22,5 +23,19 @@ class SizeUtils {
                 Size(metrics.widthPixels, metrics.heightPixels)
             }
         }
+
+        // DP 값을 Int로 변경
+        fun getDpValue(value: Float, context: Context?) = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            value,
+            context?.resources?.displayMetrics
+        )
+
+        // SP 값을 Int로 변경
+        fun getSpValue(value: Float, context: Context) = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_SP,
+            value,
+            context.resources.displayMetrics
+        )
     }
 }
