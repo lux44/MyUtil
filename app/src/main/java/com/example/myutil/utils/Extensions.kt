@@ -20,6 +20,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.LeadingMarginSpan
 import android.text.style.URLSpan
 import android.util.Base64
+import android.view.View
 import android.webkit.WebView
 import android.widget.TextView
 import androidx.core.os.bundleOf
