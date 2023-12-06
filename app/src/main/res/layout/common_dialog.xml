@@ -120,7 +120,7 @@
                 android:layout_marginEnd="6dp"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="btnTwoButtonPositive"
+                app:layout_constraintEnd_toStartOf="@id/btnTwoButtonPositive"
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatButton

@@ -146,6 +146,8 @@ dependencies {
 
     implementation(libs.dotsIndicator)
 
+    implementation(libs.exoPlayer)
+
     //implementation ("com.github.CanHub:Android-Image-Cropper:4.0.0")
 
     //implementation(libs.org.jetbrains.kotlin.gradle.plugin)
