@@ -9,7 +9,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
 import android.net.Uri
-import android.os.Bundle
 import android.provider.OpenableColumns
 import android.text.Spannable
 import android.text.SpannableString
@@ -20,11 +19,8 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.LeadingMarginSpan
 import android.text.style.URLSpan
 import android.util.Base64
-import android.view.View
 import android.webkit.WebView
 import android.widget.TextView
-import androidx.core.os.bundleOf
-import androidx.core.text.set
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
@@ -43,7 +39,6 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.lang.StringBuilder
-import java.net.URI
 import java.nio.charset.StandardCharsets
 import java.security.Key
 import java.security.KeyFactory
@@ -133,6 +128,21 @@ fun Date.age(): Int {
     val calendar = Calendar.getInstance()
     calendar.time = Date(time - Date().time)
     return 1970 - (calendar.get(Calendar.YEAR) + 1)
+}
+
+fun Context.getStringByIdentifier(name: String): String {
+    try {
+        return getString(
+            resources.getIdentifier(
+                name,
+                "string",
+                this.packageName
+            )
+        )
+    } catch (e: Exception) {
+        Timber.e("${e.printStackTrace()}")
+    }
+    return ""
 }
 
 fun String.encryptString(context: Context): String {
@@ -269,7 +279,7 @@ fun ViewHolder.setHyperLinkToText(linkSeparateText: List<PostContents>): CharSeq
     var text: CharSequence = ""
 
     linkSeparateText.forEachIndexed { _, postContents ->
-        postContents.text?.let {
+        postContents.text.let {
             val spannableString = SpannableString(it)
             if (postContents.type == ConstVariables.LINK_CONTENTS_TYPE) {
                 spannableString.apply {
