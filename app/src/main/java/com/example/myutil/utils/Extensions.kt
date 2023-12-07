@@ -9,6 +9,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.provider.OpenableColumns
 import android.text.Spannable
 import android.text.SpannableString
@@ -21,7 +22,9 @@ import android.text.style.URLSpan
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkRequest
@@ -31,6 +34,7 @@ import com.example.myutil.R
 import com.example.myutil.data.local.model.PostContents
 import com.example.myutil.databinding.CustomUiToastmessageBinding
 import com.example.myutil.ui.common.dialog.CommonDialog
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
@@ -296,6 +300,34 @@ fun TextView.setLeftMarginSpan(leftStandardText: String, fullText: String) {
         }
     } catch (e: Exception) {
         Timber.e("${e.printStackTrace()}")
+    }
+}
+
+fun BottomNavigationView.setBadge(tabResId: Int, badgeValue: Int) {
+    getOnCreateBadge(this, tabResId)?.let { badge->
+        badge.visibility = if (badgeValue > 0) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+}
+
+private fun getOnCreateBadge(bottomBar: BottomNavigationView, tabResId: Int): TextView? {
+    val parentView = bottomBar.findViewById<ViewGroup>(tabResId)
+    Timber.d("BadgeSize iconSize => h : ${bottomBar.menu.findItem(tabResId).icon?.intrinsicHeight} | w : ${bottomBar.menu.findItem(tabResId).icon?.intrinsicWidth}")
+
+    return parentView?.let {
+        var badge = parentView.findViewById<TextView>(R.id.badge_text)
+        if (badge == null) {
+            LayoutInflater.from(parentView.context).inflate(R.layout.chat_badge_layout, parentView, true)
+            badge = parentView.findViewById(R.id.badge_text)
+        } else {
+            val layoutParams = (badge.layoutParams as FrameLayout.LayoutParams)
+            layoutParams.bottomMargin = (bottomBar.menu.findItem(tabResId).icon?.intrinsicHeight ?: 0) - 10
+            layoutParams.marginStart = (bottomBar.menu.findItem(tabResId).icon?.intrinsicWidth ?: 0) / 2
+        }
+        badge
     }
 }
 
