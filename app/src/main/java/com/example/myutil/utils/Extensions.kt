@@ -19,6 +19,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.LeadingMarginSpan
 import android.text.style.URLSpan
 import android.util.Base64
+import android.view.LayoutInflater
 import android.view.View
 import android.webkit.WebView
 import android.widget.TextView
@@ -28,6 +29,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.myutil.R
 import com.example.myutil.data.local.model.PostContents
+import com.example.myutil.databinding.CustomUiToastmessageBinding
 import com.example.myutil.ui.common.dialog.CommonDialog
 import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType
@@ -148,7 +150,23 @@ fun Context.getStringByIdentifier(name: String): String {
 }
 
 fun Context.showCustomSnackBar(snackBarView: View, message: String): Snackbar {
+    val snackbar = Snackbar.make(snackBarView, "", Snackbar.LENGTH_SHORT)
+    val snackBarLayout = snackbar.view as Snackbar.SnackbarLayout
 
+    snackBarLayout.setPadding(0,0,0,resources.getDimension(R.dimen.snackbar_margin_bottom).toInt())
+
+    val inflaterView = LayoutInflater.from(snackBarView.context).inflate(R.layout.custom_ui_toastmessage, null, false)
+    snackbar.view.setBackgroundColor(Color.TRANSPARENT)
+
+    val binding: CustomUiToastmessageBinding = CustomUiToastmessageBinding.bind(inflaterView)
+    binding.root.setOnClickListener {
+        if (snackbar.isShown) snackbar.dismiss()
+    }
+    binding.tvToastMessage.text = message
+    snackBarLayout.addView(inflaterView, 0)
+
+    snackbar.show()
+    return snackbar
 }
 
 fun String.encryptString(context: Context): String {
