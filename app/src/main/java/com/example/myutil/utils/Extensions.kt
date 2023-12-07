@@ -19,6 +19,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.LeadingMarginSpan
 import android.text.style.URLSpan
 import android.util.Base64
+import android.view.View
 import android.webkit.WebView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -28,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.myutil.R
 import com.example.myutil.data.local.model.PostContents
 import com.example.myutil.ui.common.dialog.CommonDialog
+import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -143,6 +145,10 @@ fun Context.getStringByIdentifier(name: String): String {
         Timber.e("${e.printStackTrace()}")
     }
     return ""
+}
+
+fun Context.showCustomSnackBar(snackBarView: View, message: String): Snackbar {
+
 }
 
 fun String.encryptString(context: Context): String {
