@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
@@ -20,13 +21,16 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.LeadingMarginSpan
 import android.text.style.URLSpan
 import android.util.Base64
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsetsController
 import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -118,6 +122,49 @@ fun Fragment.showLoginPopup() {
 
         }
     }.build().show(parentFragmentManager, "loginDialog")
+}
+
+fun FragmentActivity.setDarkStatusBarIcon() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        window.insetsController?.setSystemBarsAppearance(
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+        )
+    } else {
+        @Suppress("DEPRECATION")
+        window.decorView.systemUiVisibility =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            } else {
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
+    }
+}
+
+fun FragmentActivity.setWhiteStatusBarIcon() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        window.insetsController?.setSystemBarsAppearance(0, WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS)
+    } else {
+        @Suppress("DEPRECATION")
+        window.decorView.systemUiVisibility = 0
+    }
+}
+
+fun FragmentActivity.isKeyboardShown(): Boolean {
+    val view = (findViewById<ViewGroup>(android.R.id.content)).getChildAt(0)
+    val defaultKeyboardHeightDP = 100
+    val estimateKeyboardDP = defaultKeyboardHeightDP + 48
+    val rect = Rect()
+    val estimatedKeyboardHeight = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        estimateKeyboardDP.toFloat(),
+        view.resources.displayMetrics
+    ).toInt()
+
+    view.getWindowVisibleDisplayFrame(rect)
+    val heightDiff = view.rootView.height - (rect.bottom - rect.top)
+
+    return heightDiff >= estimatedKeyboardHeight
 }
 
 fun Context.getBaseImageKeyValue(uid: String?): Int {
