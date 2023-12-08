@@ -8,5 +8,16 @@
 
     <string name="r_need_login">"로그인 필요"</string>
 
+    <string name="t_withdraw_member">"탈퇴한 회원"</string>
+
+
+    <string name="JustNow">"방금"</string>
+    <string name="MinuteAgo">"1분"</string>
+    <string name="MinutesAgo">"%1$d분"</string>
+    <string name="HourAgo">"1시간"</string>
+    <string name="HoursAgo">"%1$d시간"</string>
+    <string name="DayAgo">"1일"</string>
+    <string name="DaysAgo">"%1$d일"</string>
+
     <string name="se_r_need_login">"로그인이 필요합니다.\n로그인 후 더 편리하게 이용하세요!"</string>
 </resources>

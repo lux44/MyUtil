@@ -9,9 +9,12 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Rect
+import android.icu.text.SimpleDateFormat
+import android.icu.util.TimeZone
 import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
+import android.telephony.TelephonyManager
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -21,10 +24,12 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.LeadingMarginSpan
 import android.text.style.URLSpan
 import android.util.Base64
+import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.WindowInsetsController
 import android.webkit.WebView
 import android.widget.FrameLayout
@@ -57,6 +62,8 @@ import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
 import java.util.Calendar
 import java.util.Date
+import java.util.GregorianCalendar
+import java.util.Locale
 import javax.crypto.Cipher
 
 
@@ -167,16 +174,48 @@ fun FragmentActivity.isKeyboardShown(): Boolean {
     return heightDiff >= estimatedKeyboardHeight
 }
 
-fun Context.getBaseImageKeyValue(uid: String?): Int {
-    val profileDrawbleList = listOf(R.drawable.profile_random_character1, R.drawable.profile_random_character2, R.drawable.profile_random_character3, R.drawable.profile_random_character4, R.drawable.profile_random_character5)
+fun FragmentActivity.hasSoftKeys(): Boolean {
+    val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        display
+    } else {
+        windowManager.defaultDisplay
+    } ?: return true
 
-    if (uid.isNullOrEmpty()) return profileDrawbleList[2]
+    val realDisplayMetrics = DisplayMetrics()
+    display.getRealMetrics(realDisplayMetrics)
+
+    val realHeight = realDisplayMetrics.heightPixels
+    val realWidth = realDisplayMetrics.widthPixels
+
+    val displayMetrics = DisplayMetrics()
+    display.getMetrics(displayMetrics)
+
+    val displayHeight = displayMetrics.heightPixels
+    val displayWidth = displayMetrics.widthPixels
+
+    return realWidth - displayWidth > 0 || realHeight - displayHeight > 0
+}
+
+fun FragmentActivity.addOnGlobalLayoutListener(globalLayoutListener: OnGlobalLayoutListener) {
+    val parentView = (findViewById<ViewGroup>(android.R.id.content)).getChildAt(0)
+    parentView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
+}
+
+fun FragmentActivity.removeOnGlobalLayoutListener(globalLayoutListener: OnGlobalLayoutListener) {
+    val parentView = (findViewById<ViewGroup>(android.R.id.content)).getChildAt(0)
+    parentView.viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
+}
+
+fun Context.getBaseImageKeyValue(uid: String?): Int {
+    val profileDrawableList = listOf(R.drawable.profile_random_character1, R.drawable.profile_random_character2, R.drawable.profile_random_character3, R.drawable.profile_random_character4, R.drawable.profile_random_character5)
+
+    if (uid.isNullOrEmpty()) return profileDrawableList[2]
 
     val lastChar = uid.substring(uid.length -1)
     val changeInt = lastChar.toIntOrNull()
 
-    return if (changeInt != null) profileDrawbleList[changeInt%5]
-    else profileDrawbleList[lastChar.toCharArray()[0].code%5]
+    return if (changeInt != null) profileDrawableList[changeInt%5]
+    else profileDrawableList[lastChar.toCharArray()[0].code%5]
 }
 
 fun Date.age(): Int {
@@ -218,6 +257,169 @@ fun Context.showCustomSnackBar(snackBarView: View, message: String): Snackbar {
 
     snackbar.show()
     return snackbar
+}
+
+fun Context.getNickNameChange(nickName :String?,userId:String?, isFantooMember:Boolean)=
+    if (nickName.isNullOrEmpty() ||
+        nickName == "(이름없음)" ||
+        nickName == "(No name)" ||
+        nickName == "(Sin nombre)" ||
+        nickName == "(Sans nom)" ||
+        nickName == "(tidak ada nama)" ||
+        nickName == "(名前なし)" ||
+        nickName == "(Нет имени)" ||
+        nickName == "(无签名)" ||
+        nickName == "(沒有姓名)"
+    ) {
+        if(userId.isNullOrEmpty()){
+            "user_****"
+        }else{
+            if(userId.length>4){
+                if(userId.length>9){
+                    userId.substring(5, 9) + "****"
+                }else{
+                    userId.substring(5, userId.length) + "****"
+                }
+            }else{
+                "$userId****"
+            }
+        }
+    } else {
+        if(isFantooMember){
+            nickName
+        } else{
+            getString(R.string.t_withdraw_member)
+        }
+    }
+
+fun Context.getDeviceCountryCode(): String {
+    val telephoneManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+    val simCode = telephoneManager.simCountryIso
+
+    if (simCode.isEmpty()) {
+        if (telephoneManager.phoneType == TelephonyManager.PHONE_TYPE_CDMA) {
+            getCDMACountryIso()?.let {
+                if (it.length == 2) {
+                    return it.lowercase()
+                }
+            }
+        } else {
+            val networkCode = telephoneManager.networkCountryIso
+            if (networkCode.length == 2) {
+                return networkCode.lowercase()
+            }
+        }
+    } else {
+        return simCode.lowercase()
+    }
+
+    val localCode = resources.configuration.locales[0].country
+    if (localCode.length == 2) return localCode.lowercase()
+    return "us"
+}
+
+private fun getCDMACountryIso(): String? {
+    try {
+        val systemProperties = Class.forName("android.os.SystemProperties")
+        val get = systemProperties.getMethod("get", String::class.java)
+        val homeOperator = get.invoke(systemProperties, "ro.cdma.home.operator.numeric") as String
+
+        when (homeOperator.substring(0,3).toInt()) {
+            330 -> return "PR"
+            310 -> return "US"
+            311 -> return "US"
+            312 -> return "US"
+            316 -> return "US"
+            283 -> return "AM"
+            460 -> return "CN"
+            455 -> return "MO"
+            414 -> return "MM"
+            619 -> return "SL"
+            450 -> return "KR"
+            634 -> return "SD"
+            434 -> return "UZ"
+            232 -> return "AT"
+            204 -> return "NL"
+            262 -> return "DE"
+            247 -> return "LV"
+            255 -> return "UA"
+        }
+    } catch (e: Exception) {
+
+    }
+    return null
+}
+
+@SuppressLint("SimpleDateFormat")
+fun Context.diffTimeWithCurrentTime(time: String?,
+                                    timeFormat: String = "yyyy-MM-dd'T'HH:mm:ss"): String {
+    val monthPattern = if(Locale.getDefault().language == LanguageUtils.KOREAN) "MM월 dd일" else "MMM dd"
+    val yearsPattern = if(Locale.getDefault().language == LanguageUtils.KOREAN) "yyyy년 MM월 dd일" else "MMM dd, yyyy"
+    //바꿀 포맷
+    val currentYearFormat = SimpleDateFormat(monthPattern)
+    currentYearFormat.timeZone= TimeZone.getDefault()
+    val diffYearFormat = SimpleDateFormat(yearsPattern)
+    diffYearFormat.timeZone= TimeZone.getDefault()
+    //리턴값
+    var newDate = "Unknown"
+    try {
+        val timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        val dateFormat = SimpleDateFormat(timeFormat, Locale.getDefault())
+        dateFormat.timeZone = timeZone
+        val currentDate =dateFormat.parse(dateFormat.format(Date()))
+
+        val oldDate = dateFormat.parse(time)
+        val checkMinOrSec = (currentDate.time) - oldDate.time
+        if (checkMinOrSec / 1000 < 60) {
+            newDate = getString(R.string.JustNow)
+        } else if (checkMinOrSec / (60 * 1000) <= 60) {
+            newDate =if((checkMinOrSec / (60 * 1000))==1L){
+                "${getString(R.string.MinuteAgo)}"
+            }else{
+                "${getString(R.string.MinutesAgo,(checkMinOrSec / (60 * 1000)))}"
+            }
+        } else if (checkMinOrSec / (60 * 60 * 1000) < 24) {
+            newDate =if((checkMinOrSec / (60 * 60 * 1000))==1L){
+                "${getString(R.string.HourAgo)}"
+            }else{
+                "${getString(R.string.HoursAgo,(checkMinOrSec / (60 * 60 * 1000)))}"
+            }
+        } else if (checkMinOrSec / (24 * 60 * 60 * 1000) < 8) {
+            newDate =if((checkMinOrSec / (24 * 60 * 60 * 1000))==1L){
+                "${getString(R.string.DayAgo)}"
+            }else{
+                "${getString(R.string.DaysAgo,(checkMinOrSec / (24 * 60 * 60 * 1000)))}"
+            }
+        } else {
+            val calendar = GregorianCalendar()
+            calendar.time=oldDate
+            val postYear= calendar.get(Calendar.YEAR)
+            calendar.time=currentDate
+            val currentYear= calendar.get(Calendar.YEAR)
+            if(postYear==currentYear){
+                newDate = currentYearFormat.format(oldDate)
+            }else{
+                newDate = diffYearFormat.format(oldDate)
+            }
+        }
+
+    } catch (e: Exception) {
+    }
+    return newDate
+}
+
+fun Context.navigationHeight(): Int {
+    val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+
+    return if (resourceId > 0) resources.getDimensionPixelSize(resourceId)
+    else 0
+}
+
+fun Context.statusBarHeight(): Int {
+    val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+
+    return if (resourceId > 0) resources.getDimensionPixelSize(resourceId)
+    else 0
 }
 
 fun String.encryptString(context: Context): String {
@@ -265,6 +467,14 @@ fun String.fromBase64(): String = String(Base64.decode(this, Base64.DEFAULT), St
 fun String.toBase64(): String = String(Base64.encode(this.toByteArray(), Base64.DEFAULT), StandardCharsets.UTF_8)
 
 fun Float.toDp(): Float = this * Resources.getSystem().displayMetrics.density + 0.5f
+
+fun Long.changeTimeFormatUntilMillis(): String{
+    val milliSec = this %1000
+    val sec = ((this /1000)%60).toInt()
+    val min = ((this /(1000*60))%60).toInt()
+    val hours = ((this /(1000*60*60))%24).toInt()
+    return String.format("%02d:%02d:%02d.%03d",hours,min,sec,milliSec)
+}
 
 @SuppressLint("Range")
 fun Uri.asMultiPart(name: String, fileName: String?, contentResolver: ContentResolver): MultipartBody.Part? {
