@@ -38,10 +38,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
@@ -600,6 +603,121 @@ private fun getOnCreateBadge(bottomBar: BottomNavigationView, tabResId: Int): Te
     }
 }
 
+fun RecyclerView.addItemDecorationWithoutFirstDivider() {
+    if (layoutManager !is LinearLayoutManager) return
+
+    addItemDecoration(object : DividerItemDecoration(context, (layoutManager as LinearLayoutManager).orientation) {
+
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            super.getItemOffsets(outRect, view, parent, state)
+
+            val position = parent.getChildAdapterPosition(view)
+            Timber.d("addItemDecorationWithoutFirstDivider, position : $position")
+
+            if (position == 0) {
+                ContextCompat.getDrawable(context, R.drawable.divider_light_gray50)?.let {
+                    setDrawable(it)
+                }
+            } else {
+                ContextCompat.getDrawable(context, R.drawable.divider_library)?.let {
+                    setDrawable(it)
+                }
+            }
+        }
+
+    })
+}
+
+fun RecyclerView.addLibraryItemDecorationDivider() {
+    if (layoutManager !is LinearLayoutManager) return
+
+    addItemDecoration(object :
+        DividerItemDecoration(context, (layoutManager as LinearLayoutManager).orientation) {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            super.getItemOffsets(outRect, view, parent, state)
+
+            ContextCompat.getDrawable(context, R.drawable.divider_library)?.let {
+                setDrawable(it)
+            }
+        }
+    })
+}
+
+fun RecyclerView.addSingleItemDecoration(vararg itemDecorations: RecyclerView.ItemDecoration) {
+    val itemDecoCount = itemDecorationCount
+    if (itemDecoCount > 0) {
+        for (a in 0 until itemDecoCount) {
+            for (itemDeco in itemDecorations) {
+                if (getItemDecorationAt(a) == itemDeco) {
+                    removeItemDecorationAt(a)
+                }
+            }
+        }
+    }
+}
+
+fun RecyclerView.clearDecorations() {
+    if (itemDecorationCount > 0) {
+        for (i in itemDecorationCount - 1 downTo 0) {
+            removeItemDecorationAt(i)
+        }
+    }
+}
+
+fun RecyclerView.anchorSmoothScrollToPosition(
+    position: Int,
+    anchorPosition: Int = 3
+) {
+    layoutManager?.apply {
+        when (this) {
+            is LinearLayoutManager -> {
+                val topItem = findFirstVisibleItemPosition()
+                val distance = topItem - position
+                val anchorItem = when {
+                    distance > anchorPosition -> position + anchorPosition
+                    distance < -anchorPosition -> position - anchorPosition
+                    else -> topItem
+                }
+
+                if (anchorItem != topItem) {
+                    smoothScrollToPosition(anchorItem)
+                    scrollToPosition(anchorItem)
+                }
+
+                post {
+                    smoothScrollToPosition(position)
+                }
+            }
+            else -> smoothScrollToPosition(position)
+        }
+    }
+}
+
+fun RecyclerView.checkLastItemVisible(
+    itemClick: (isLast: Boolean) -> Unit
+) {
+    this.clearOnScrollListeners()
+    this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val lastItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+            val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
+
+            itemClick(lastItemPosition == itemTotalCount)
+        }
+    })
+}
+
 fun ViewHolder.setHyperLinkToText(linkSeparateText: List<PostContents>): CharSequence {
     var text: CharSequence = ""
 
@@ -671,6 +789,46 @@ fun RecyclerView.ViewHolder.setProfileAvatarForUser(
                 .apply(bitmapTransform(MultiTransformation(CenterCrop(),
                     MaskTransformation(R.drawable.bg_etc_profiles)
                 )))
+                .into(imageView)
+        }
+    }
+}
+
+fun RecyclerView.ViewHolder.setCommunityProfileAvatar(
+    imageView: ImageView,
+    imageUrl: String?,
+    @DrawableRes placeHolderId: Int? = null,
+    img: Int
+) {
+    val placeholder = placeHolderId ?: img
+    val placeHolderDrawable = AppCompatResources.getDrawable(imageView.context, placeholder)
+
+    when (imageUrl) {
+        null -> {
+            Glide.with(imageView.context)
+                .load(placeHolderDrawable)
+                .apply(
+                    bitmapTransform(
+                        MultiTransformation(
+                            CenterCrop(),
+                            MaskTransformation(R.drawable.bg_etc_profiles)
+                        )
+                    )
+                )
+                .into(imageView)
+        }
+        else -> {
+            Glide.with(imageView.context)
+                .load(imageUrl)
+                .error(placeHolderDrawable)
+                .apply(
+                    bitmapTransform(
+                        MultiTransformation(
+                            CenterCrop(),
+                            MaskTransformation(R.drawable.bg_etc_profiles)
+                            )
+                    )
+                )
                 .into(imageView)
         }
     }
