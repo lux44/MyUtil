@@ -124,6 +124,10 @@ dependencies {
     implementation(libs.lifecycle.safestate)
 
     implementation(libs.glide)
+    implementation(libs.glide.compose)
+    kapt(libs.glide.compiler)
+
+    implementation(libs.glide.transformation)
 
     implementation(libs.gson)
     implementation(libs.logging.interceptor)

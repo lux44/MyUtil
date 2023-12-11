@@ -60,6 +60,7 @@ tracing = "1.1.0"
 
 ## Glide
 glide = "1.0.0-alpha.1"
+glide-transformation = "4.3.0"
 
 ## Network
 gson = "2.10.1"
@@ -180,7 +181,12 @@ lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-
 lifecycle-safestate = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "lifecycle" }
 
 ## Glide
-glide = { module = "com.github.bumptech.glide:compose", version.ref = "glide" }
+glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glide" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+
+## Glide-Transformations
+glide-transformation = { module = "jp.wasabeef:glide-transformations", version.ref = "glide-transformation" }
 
 ## Network
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

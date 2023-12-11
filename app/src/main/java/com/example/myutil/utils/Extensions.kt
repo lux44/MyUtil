@@ -9,6 +9,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.icu.text.SimpleDateFormat
 import android.icu.util.TimeZone
 import android.net.Uri
@@ -33,18 +34,29 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.WindowInsetsController
 import android.webkit.WebView
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.myutil.R
 import com.example.myutil.data.local.model.PostContents
 import com.example.myutil.databinding.CustomUiToastmessageBinding
 import com.example.myutil.ui.common.dialog.CommonDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import jp.wasabeef.glide.transformations.MaskTransformation
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -636,4 +648,69 @@ fun ViewHolder.convertingTextContainUrl(contents: String?, ogLinkList: List<Stri
     }
 
     return if (linkSeparateText.isNotEmpty()) null else linkSeparateText
+}
+
+fun RecyclerView.ViewHolder.setProfileAvatarForUser(
+    imageView: ImageView,
+    imageUrl: String?,
+    @DrawableRes placeHolderId: Int? = null
+) {
+    val placeholder = placeHolderId ?: R.drawable.profile_character_xl
+    val placeholderDrawable = AppCompatResources.getDrawable(imageView.context, placeholder)
+
+    when (imageUrl) {
+        null -> {
+            Glide.with(imageView.context)
+                .load(placeholderDrawable)
+                .into(imageView)
+        }
+        else -> {
+            Glide.with(imageView.context)
+                .load(imageUrl)
+                .error(placeholderDrawable)
+                .apply(bitmapTransform(MultiTransformation(CenterCrop(),
+                    MaskTransformation(R.drawable.bg_etc_profiles)
+                )))
+                .into(imageView)
+        }
+    }
+}
+
+fun RecyclerView.ViewHolder.setImageWithPlaceHolder(
+    imageView: ImageView,
+    imageUrl: String?,
+    @DrawableRes maskingId: Int? = null,
+    @DrawableRes placeHolderId: Int? = null
+) {
+    val placeholder: Drawable? = if (placeHolderId != null) {
+        AppCompatResources.getDrawable(itemView.context, placeHolderId)
+    } else {
+        AppCompatResources.getDrawable(itemView.context, R.drawable.image_picture)
+    }
+
+    var maskingOption = RequestOptions()
+
+    if (maskingId != null) {
+        maskingOption = bitmapTransform(
+            MultiTransformation(CenterCrop(), MaskTransformation(maskingId))
+        )
+    }
+
+    when (imageUrl) {
+        null -> {
+            Glide.with(imageView.context)
+                .load(placeholder)
+                .apply(maskingOption)
+                .error(placeholder)
+                .into(imageView)
+        }
+        else -> {
+            Glide.with(imageView.context)
+                .load(imageUrl)
+                .apply(maskingOption)
+                .error(placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView)
+        }
+    }
 }
