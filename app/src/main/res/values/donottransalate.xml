@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="lang_port" type="string">"Português"</item>
+    <item name="lang_ind" type="string">"Bahasa Indonesia"</item>
+    <item name="lang_viet" type="string">"tiếng Việt"</item>
+    <item name="lang_thai" type="string">"ภาษาไทย"</item>
+    <item name="lang_ar" type="string">"العربية"</item>
+    <item name="lang_kr" type="string">"한국어"</item>
+    <item name="lang_cn" type="string">"中國語 (简体)"</item>
+    <item name="lang_tr" type="string">"中國語 (繁體, 台灣)"</item>
+    <item name="lang_jp" type="string">"日本語"</item>
+    <item name="lang_en" type="string">"English"</item>
+    <item name="lang_es" type="string">"Español"</item>
+    <item name="lang_fr" type="string">"Français"</item>
+    <item name="lang_pol" type="string">"język polski"</item>
+    <item name="lang_it" type="string">"Lingua italiana"</item>
+    <item name="lang_ru" type="string">"русский"</item>
+    <item name="lang_de" type="string">"Deutsch"</item>
+    <item name="lang_hi" type="string">"हिन्दी"</item>
+</resources>

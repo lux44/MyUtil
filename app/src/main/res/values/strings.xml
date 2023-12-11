@@ -10,6 +10,8 @@
 
     <string name="t_withdraw_member">"탈퇴한 회원"</string>
 
+    <string name="s_lang_nothing_title_simple">"선택 없음"</string>
+
 
     <string name="JustNow">"방금"</string>
     <string name="MinuteAgo">"1분"</string>
