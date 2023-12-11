@@ -36,11 +36,19 @@ import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -60,6 +68,8 @@ import com.example.myutil.ui.common.dialog.CommonDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import jp.wasabeef.glide.transformations.MaskTransformation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -82,7 +92,9 @@ import java.util.Locale
 import javax.crypto.Cipher
 
 
-
+/**
+ * Activity
+ * */
 fun Activity.applyDefaultFontScale(configuration: Configuration) {
     if (configuration != null && configuration.fontScale != 1.0f) {
         configuration.fontScale = 1.0.toFloat()
@@ -111,6 +123,14 @@ fun Activity.shareLink(shareLink: String) {
         )
     )
 }
+
+fun Activity.dismissKeyboard(view: View) {
+    WindowInsetsControllerCompat(window, view).hide(WindowInsetsCompat.Type.ime())
+}
+
+/**
+ * Fragment
+ * */
 
 fun Fragment.moveToDeepLinkRequest(uri: Uri) {
     try {
@@ -145,6 +165,54 @@ fun Fragment.showLoginPopup() {
         }
     }.build().show(parentFragmentManager, "loginDialog")
 }
+
+fun Fragment.showKeyboard(view: View) {
+    WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
+    WindowInsetsControllerCompat(requireActivity().window, view).show(WindowInsetsCompat.Type.ime())
+}
+
+fun Fragment.dismissKeyboard(view: View) {
+    WindowInsetsControllerCompat(requireActivity().window, view).hide(WindowInsetsCompat.Type.ime())
+}
+
+
+inline fun Fragment.launchAndRepeatWithViewLifecycle(
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    crossinline block: suspend CoroutineScope.() -> Unit
+) {
+    viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycle.repeatOnLifecycle(minActiveState) {
+            block()
+        }
+    }
+}
+
+fun Fragment.setStatusBar(
+    @ColorRes color: Int,
+    isLight: Boolean
+) {
+    val window = requireActivity().window
+    val decorView = window.decorView
+    val windowInsetsControllerCompat = WindowInsetsControllerCompat(window, decorView)
+
+    window.statusBarColor = requireContext().getColor(color)
+    windowInsetsControllerCompat.isAppearanceLightStatusBars = isLight
+    WindowCompat.setDecorFitsSystemWindows(window, true)
+}
+
+fun Fragment.startShare(title: String, share: String) {
+    Timber.d("start share")
+    ShareCompat.IntentBuilder(requireContext())
+        .setType("text/plain")
+        .setChooserTitle(title)
+        .setText(share)
+        .startChooser()
+}
+
+
+/**
+ * FragmentActivity
+ * */
 
 fun FragmentActivity.setDarkStatusBarIcon() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -221,6 +289,10 @@ fun FragmentActivity.removeOnGlobalLayoutListener(globalLayoutListener: OnGlobal
     parentView.viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
 }
 
+/**
+ * Context
+ * */
+
 fun Context.getBaseImageKeyValue(uid: String?): Int {
     val profileDrawableList = listOf(R.drawable.profile_random_character1, R.drawable.profile_random_character2, R.drawable.profile_random_character3, R.drawable.profile_random_character4, R.drawable.profile_random_character5)
 
@@ -244,6 +316,21 @@ fun Context.getStringByIdentifier(name: String): String {
         return getString(
             resources.getIdentifier(
                 name,
+                "string",
+                this.packageName
+            )
+        )
+    } catch (e: Exception) {
+        Timber.e("${e.printStackTrace()}")
+    }
+    return ""
+}
+
+fun Context.getErrorString(errorCode: String): String {
+    try {
+        return getString(
+            resources.getIdentifier(
+                "Error $errorCode",
                 "string",
                 this.packageName
             )
@@ -437,6 +524,10 @@ fun Context.statusBarHeight(): Int {
     else 0
 }
 
+
+/**
+ * Data Type
+ * */
 fun String.encryptString(context: Context): String {
     var encryptedStringResult = ""
 
@@ -514,6 +605,10 @@ fun Uri.asMultiPart(name: String, fileName: String?, contentResolver: ContentRes
     }
 }
 
+/**
+ * WebView
+ * */
+
 fun WebView.executeScript(
     functionName: String,
     params: List<Any> = emptyList(),
@@ -530,6 +625,10 @@ fun WebView.executeScript(
     Timber.d("executeScript: $sb")
     evaluateJavascript(sb.toString(), onResult)
 }
+
+/**
+ * TextView
+ * */
 
 fun TextView.setLeftMarginSpan(leftStandardText: String, fullText: String) {
     try {
@@ -575,6 +674,10 @@ fun TextView.setLeftMarginSpan(leftStandardText: String, fullText: String) {
     }
 }
 
+/**
+ * BottomNavigationView
+ * */
+
 fun BottomNavigationView.setBadge(tabResId: Int, badgeValue: Int) {
     getOnCreateBadge(this, tabResId)?.let { badge->
         badge.visibility = if (badgeValue > 0) {
@@ -603,6 +706,9 @@ private fun getOnCreateBadge(bottomBar: BottomNavigationView, tabResId: Int): Te
     }
 }
 
+/**
+ * RecyclerView
+ * */
 fun RecyclerView.addItemDecorationWithoutFirstDivider() {
     if (layoutManager !is LinearLayoutManager) return
 
@@ -717,6 +823,10 @@ fun RecyclerView.checkLastItemVisible(
         }
     })
 }
+
+/**
+ * RecyclerView.ViewHolder
+ * */
 
 fun ViewHolder.setHyperLinkToText(linkSeparateText: List<PostContents>): CharSequence {
     var text: CharSequence = ""
