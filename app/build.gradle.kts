@@ -125,7 +125,7 @@ dependencies {
 
     implementation(libs.glide)
     implementation(libs.glide.compose)
-    kapt(libs.glide.compiler)
+    //kapt(libs.glide.compiler)
 
     implementation(libs.glide.transformation)
 
