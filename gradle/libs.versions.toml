@@ -88,6 +88,9 @@ dots = "4.3"
 ## ExoPlayer
 exoPlayer = "2.19.1"
 
+## FFmpeg
+ffmpeg = "5.1"
+
 
 [libraries]
 
@@ -221,6 +224,9 @@ dotsIndicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dots" }
 
 ## ExoPlayer
 exoPlayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoPlayer" }
+
+## FFmpeg
+ffmpeg = { module = "com.arthenica:ffmpeg-kit-min", version.ref = "ffmpeg" }
 
 
 [plugins]
