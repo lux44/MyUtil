@@ -84,6 +84,9 @@ photoView = "2.0.0"
 ## DotIndicator
 dots = "4.3"
 
+## ExoPlayer
+exoPlayer = "2.19.1"
+
 
 [libraries]
 
@@ -209,6 +212,9 @@ photoView = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoVi
 
 ## ViewPager - DotsIndicator
 dotsIndicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dots" }
+
+## ExoPlayer
+exoPlayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoPlayer" }
 
 
 [plugins]
