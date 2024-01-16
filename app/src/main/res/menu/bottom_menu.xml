@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home"
+        android:enabled="true"
+        android:icon="@drawable/menu_home_icon_selector"
+        android:title="@string/tab_home"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/community"
+        android:enabled="true"
+        android:icon="@drawable/menu_community_icon_selector"
+        android:title="@string/tab_community"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/club"
+        android:enabled="true"
+        android:icon="@drawable/menu_club_icon_selector"
+        android:title="@string/tab_club"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/chatting"
+        android:enabled="true"
+        android:icon="@drawable/menu_chat_icon_selector"
+        android:title="@string/tab_chat"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/minute"
+        android:enabled="true"
+        android:icon="@drawable/menu_short_icon_selector"
+        android:title="@string/tab_minute"
+        app:showAsAction="always" />
+</menu>
