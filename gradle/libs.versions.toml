@@ -225,6 +225,9 @@ dotsIndicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dots" }
 ## ExoPlayer
 exoPlayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoPlayer" }
 
+## ExoPlayer
+exoPlayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoPlayer" }
+
 ## FFmpeg
 ffmpeg = { module = "com.arthenica:ffmpeg-kit-min", version.ref = "ffmpeg" }
 

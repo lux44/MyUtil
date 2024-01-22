@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">MyUtil</string>
 
+    <string name="tab_home">Home</string>
+    <string name="tab_community">Community</string>
+    <string name="tab_club">Club</string>
+    <string name="tab_chat">Chat</string>
+    <string name="tab_minute">Minute</string>
+
     <string name="c_cancel">"취소"</string>
 
 

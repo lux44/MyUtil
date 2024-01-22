@@ -15,6 +15,8 @@ import javax.inject.Qualifier
 import javax.inject.Singleton
 import android.os.Build
 import com.example.myutil.data.remote.api.AuthService
+import com.example.myutil.data.remote.api.CommonService
+import com.example.myutil.data.remote.api.DauService
 import com.example.myutil.utils.ConstVariables.BASE_URL
 import com.example.myutil.utils.ConstVariables.DEV_BASE_URL
 import com.example.myutil.utils.ConstVariables.DEV_MINUTE_API_URL
@@ -79,6 +81,13 @@ class NetworkModule {
         DEV_MINUTE_API_URL
     } else {
         MINUTE_API_URL
+    }
+
+    @ApiServer
+    @Singleton
+    @Provides
+    fun provideDauService(@ApiServer retrofit: Retrofit): DauService {
+        return retrofit.create(DauService::class.java)
     }
 
 
@@ -170,5 +179,12 @@ class NetworkModule {
     @Provides
     fun provideAuthService(@AuthServer retrofit: Retrofit): AuthService {
         return retrofit.create(AuthService::class.java)
+    }
+
+    @ApiServer
+    @Singleton
+    @Provides
+    fun provideCommonService(@ApiServer retrofit: Retrofit): CommonService {
+        return retrofit.create(CommonService::class.java)
     }
 }
