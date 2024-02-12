@@ -9,7 +9,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
-    private val commonService: CommonService
+
 ): ViewModel() {
 
 }
