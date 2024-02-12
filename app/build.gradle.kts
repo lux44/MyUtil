@@ -124,6 +124,8 @@ dependencies {
     implementation(libs.lifecycle.safestate)
 
     implementation(libs.glide)
+    implementation(libs.glide.compose)
+    implementation(libs.glide.transformation)
 
     implementation(libs.gson)
     implementation(libs.logging.interceptor)
@@ -149,8 +151,6 @@ dependencies {
     implementation(libs.exoPlayer)
 
     implementation(libs.ffmpeg)
-
-    implementation(libs.exoPlayer)
 
     //implementation ("com.github.CanHub:Android-Image-Cropper:4.0.0")
 
