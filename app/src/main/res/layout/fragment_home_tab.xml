@@ -37,8 +37,7 @@
                     android:layout_width="96dp"
                     android:layout_height="18dp"
                     android:layout_marginTop="16dp"
-                    android:src="@drawable/badge_fantoo"
-                    />
+                    android:src="@drawable/badge_fantoo" />
                 <TextView
                     android:id="@+id/tvDevText"
                     android:layout_width="wrap_content"
@@ -133,6 +132,7 @@
             android:background="@color/bg_bg_light_gray_50"
             app:layout_constraintTop_toBottomOf="@id/live_streaming_banner_container"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clAiBtnContainer"
         android:layout_width="175dp"
@@ -143,8 +143,7 @@
         android:backgroundTint="@color/primary_default"
         android:layout_marginBottom="12dp"
         android:layout_marginRight="12dp"
-        android:elevation="2dp"
-        >
+        android:elevation="2dp">
         <TextView
             android:id="@+id/tvAiTitle"
             android:layout_width="wrap_content"
