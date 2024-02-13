@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_search"
+        android:icon="@drawable/icon_outline_search"
+        app:showAsAction="always"
+        android:title=""/>
+    <item android:id="@+id/menu_shop_and_event"
+        android:icon="@drawable/home_menu_shop_event"
+        app:showAsAction="always"
+        android:title=""/>
+    <item android:id="@+id/menu_menu"
+        android:icon="@drawable/icon_outline_menu"
+        app:showAsAction="always"
+        android:title=""/>
+</menu>
