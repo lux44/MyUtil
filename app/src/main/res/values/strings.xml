@@ -7,12 +7,17 @@
     <string name="tab_chat">Chat</string>
     <string name="tab_minute">Minute</string>
 
-    <string name="c_cancel">"취소"</string>
+    <string name="a_woman">"여자"</string>
 
+    <string name="c_cancel">"취소"</string>
 
     <string name="h_confirm">"확인"</string>
 
+    <string name="n_man">"남자"</string>
+
     <string name="r_need_login">"로그인 필요"</string>
+
+    <string name="s_select">"선택"</string>
 
     <string name="t_withdraw_member">"탈퇴한 회원"</string>
 

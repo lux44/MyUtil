@@ -17,6 +17,7 @@ import android.os.Build
 import com.example.myutil.data.remote.api.AuthService
 import com.example.myutil.data.remote.api.CommonService
 import com.example.myutil.data.remote.api.DauService
+import com.example.myutil.data.remote.api.UserInfoService
 import com.example.myutil.utils.ConstVariables.BASE_URL
 import com.example.myutil.utils.ConstVariables.DEV_BASE_URL
 import com.example.myutil.utils.ConstVariables.DEV_MINUTE_API_URL
@@ -186,5 +187,12 @@ class NetworkModule {
     @Provides
     fun provideCommonService(@ApiServer retrofit: Retrofit): CommonService {
         return retrofit.create(CommonService::class.java)
+    }
+
+    @ApiServer
+    @Singleton
+    @Provides
+    fun provideUserInfoService(@ApiServer retrofit: Retrofit): UserInfoService {
+        return retrofit.create(UserInfoService::class.java)
     }
 }
