@@ -55,6 +55,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.transition.Visibility
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -672,6 +673,11 @@ fun TextView.setLeftMarginSpan(leftStandardText: String, fullText: String) {
     } catch (e: Exception) {
         Timber.e("${e.printStackTrace()}")
     }
+}
+
+fun TextView.setTextAndVisibility(message: String, visible: Int) {
+    text = message
+    visibility = visible
 }
 
 /**
