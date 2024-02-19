@@ -22,7 +22,7 @@ abstract class BaseFragment<viewBinding: ViewBinding>(private val inflate: Infla
     lateinit var navController: NavController
 
     private var _binding: viewBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     abstract fun initUi()
     abstract fun initUiActionEvent()

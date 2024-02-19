@@ -1,10 +1,13 @@
 package com.example.myutil.ui.home
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
+import com.example.myutil.BuildConfig
 import com.example.myutil.R
 import com.example.myutil.databinding.FragmentHomeTabBinding
 import com.example.myutil.ui.common.BaseFragment
+import com.example.myutil.utils.ModeChanger
 import com.example.myutil.utils.setDarkStatusBarIcon
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,7 +41,28 @@ class HomeTabFragment: BaseFragment<FragmentHomeTabBinding>(FragmentHomeTabBindi
     }
 
     private fun initToolbar() {
+        if (homeTabViewModel.appMode == ModeChanger.MODE_DEBUG && BuildConfig.DEBUG) {
+            binding.tvDevText.visibility = View.VISIBLE
+        } else {
+            binding.tvDevText.visibility = View.GONE
+        }
 
+        // 추가 작업 필요
+        binding.homeToolbar.setOnMenuItemClickListener { menuItem->
+            when (menuItem.itemId) {
+                R.id.menu_search -> {
+                    true
+                }
+                R.id.menu_shop_and_event -> {
+                    true
+                }
+                R.id.menu_menu -> {
+                    true
+                }
+                else -> false
+
+            }
+        }
     }
 
 }
