@@ -92,6 +92,9 @@ exoPlayer = "2.19.1"
 ## FFmpeg
 ffmpeg = "5.1"
 
+## SwipeRefreshLayout
+swipeRefresh = "1.1.0"
+
 
 [libraries]
 
@@ -228,6 +231,9 @@ exoPlayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "
 
 ## FFmpeg
 ffmpeg = { module = "com.arthenica:ffmpeg-kit-min", version.ref = "ffmpeg" }
+
+## SwipeRefreshLayout
+swipeRefeshLayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swipeRefresh" }
 
 
 [plugins]

@@ -152,6 +152,8 @@ dependencies {
 
     implementation(libs.ffmpeg)
 
+    implementation(libs.swipeRefeshLayout)
+
     //implementation ("com.github.CanHub:Android-Image-Cropper:4.0.0")
 
     //implementation(libs.org.jetbrains.kotlin.gradle.plugin)
