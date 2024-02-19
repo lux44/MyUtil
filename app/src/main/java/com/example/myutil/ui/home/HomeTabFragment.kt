@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
+import androidx.viewpager2.widget.ViewPager2
 import com.example.myutil.BuildConfig
 import com.example.myutil.R
 import com.example.myutil.databinding.FragmentHomeTabBinding
@@ -13,6 +15,7 @@ import com.example.myutil.ui.menu.DialogClickType
 import com.example.myutil.ui.menu.DialogMessage
 import com.example.myutil.ui.menu.DialogTitle
 import com.example.myutil.ui.menu.MenuDialogFragment
+import com.example.myutil.utils.HorizontalMarginItemDecoration
 import com.example.myutil.utils.ModeChanger
 import com.example.myutil.utils.addSingleItemDecoration
 import com.example.myutil.utils.setDarkStatusBarIcon
@@ -85,7 +88,16 @@ class HomeTabFragment: BaseFragment<FragmentHomeTabBinding>(FragmentHomeTabBindi
         // 상단 카테고리탭 어댑터 설정 (향후 스크롤로 변경 가능성이 있어 recyclerView로 작성)
         binding.rcCategoryList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rcCategoryList.adapter = categoryListAdapter
-        binding.rcCategoryList.addSingleItemDecoration()
+        binding.rcCategoryList.addSingleItemDecoration(HorizontalMarginItemDecoration(20f, 5f, requireContext()))
+
+        // 데이터 변경시 깜빡임 제거
+        if (binding.rcCategoryList.itemAnimator is SimpleItemAnimator) {
+            (binding.rcCategoryList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        }
+
+        // HomeTab 에 메인 화면 ViewPager2
+        binding.rcCategoryvp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        homeTabViewPagerAdapter = HomeTabPagerViewAdapter(childFragmentManager, lifecycle)
     }
 
     private fun showLoginMessage() {
