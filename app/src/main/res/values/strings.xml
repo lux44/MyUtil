@@ -11,17 +11,26 @@
 
     <string name="c_cancel">"취소"</string>
 
+    <string name="en_for_you" translatable="false">"For You"</string>
+    <string name="en_popular">"Popular"</string>
+    <string name="en_newest">"Newest"</string>
+
     <string name="five_hundred_fanit">"500 FANiT"</string>
+    <string name="f_fansing">"FANSING"</string>
 
     <string name="g_denial">"거부"</string>
 
     <string name="h_confirm">"확인"</string>
+    <string name="h_hanryutimes">"HANRYUTIMES"</string>
 
     <string name="n_man">"남자"</string>
 
     <string name="r_need_login">"로그인 필요"</string>
 
     <string name="s_select">"선택"</string>
+
+    <string name="p_fantoo_tv">"FANTOO TV"</string>
+    <string name="p_playlist">PLAYLIST</string>
 
     <string name="t_withdraw_member">"탈퇴한 회원"</string>
 

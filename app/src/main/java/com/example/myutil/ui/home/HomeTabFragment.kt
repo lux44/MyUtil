@@ -3,6 +3,7 @@ package com.example.myutil.ui.home
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myutil.BuildConfig
 import com.example.myutil.R
 import com.example.myutil.databinding.FragmentHomeTabBinding
@@ -13,6 +14,7 @@ import com.example.myutil.ui.menu.DialogMessage
 import com.example.myutil.ui.menu.DialogTitle
 import com.example.myutil.ui.menu.MenuDialogFragment
 import com.example.myutil.utils.ModeChanger
+import com.example.myutil.utils.addSingleItemDecoration
 import com.example.myutil.utils.setDarkStatusBarIcon
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -22,7 +24,7 @@ class HomeTabFragment: BaseFragment<FragmentHomeTabBinding>(FragmentHomeTabBindi
 
     // category list
     private val categoryListAdapter = CategoryListAdapter()
-    private val categoryItems = listOf<Int>()
+    private var categoryItems = listOf<Int>()
 
     // view pager
     lateinit var homeTabViewPagerAdapter: HomeTabPagerViewAdapter
@@ -33,7 +35,7 @@ class HomeTabFragment: BaseFragment<FragmentHomeTabBinding>(FragmentHomeTabBindi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        settingValue()
     }
 
     override fun initUi() {
@@ -47,6 +49,10 @@ class HomeTabFragment: BaseFragment<FragmentHomeTabBinding>(FragmentHomeTabBindi
 
     override fun initUiActionEvent() {
         TODO("Not yet implemented")
+    }
+
+    private fun settingValue() {
+        categoryItems = listOf(R.string.en_newest, R.string.en_popular, R.string.en_for_you, R.string.p_fantoo_tv, R.string.p_playlist, R.string.f_fansing, R.string.h_hanryutimes)
     }
 
     // Tool bar 정의
@@ -73,6 +79,13 @@ class HomeTabFragment: BaseFragment<FragmentHomeTabBinding>(FragmentHomeTabBindi
 
             }
         }
+    }
+
+    private fun initView() {
+        // 상단 카테고리탭 어댑터 설정 (향후 스크롤로 변경 가능성이 있어 recyclerView로 작성)
+        binding.rcCategoryList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rcCategoryList.adapter = categoryListAdapter
+        binding.rcCategoryList.addSingleItemDecoration()
     }
 
     private fun showLoginMessage() {
